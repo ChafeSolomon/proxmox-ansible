@@ -1,0 +1,34 @@
+---
+- name: Download and Install CoreDNS
+  ansible.builtin.get_url:
+    url: "https://github.com/coredns/coredns/releases/download/v1.12.2/coredns_1.12.2_linux_amd64.tgz"
+    checksum: "sha256:95c03c2e8ef56e2ec3cfbb2970504d7abdc07666b9dde8c5dc9d72d34dff756e"
+    dest: /tmp/coredns.tgz
+
+- name: Untar the archive into the destination directory
+  ansible.builtin.unarchive:
+    src: "/tmp/coredns.tgz"
+    dest: "/usr/local/bin/"
+    remote_src: yes # Indicates the source file is already on the remote machine
+
+- name: Template for Corefile
+  ansible.builtin.template:
+      src: Corefile.j2     # Source template file (in 'templates/' directory)
+      dest: /usr/local/bin/Corefile # Destination path on the target server
+      owner: root                 # Set file owner to root
+      group: root                 # Set file group to root
+      mode: '0644'
+
+- name: Setup Service CoreDNS
+  ansible.builtin.template:
+      src: Coredns.j2     # Source template file (in 'templates/' directory)
+      dest: /etc/systemd/system/coredns.service # Destination path on the target server
+      owner: root                 # Set file owner to root
+      group: root                 # Set file group to root
+      mode: '0644'
+
+- name: Enable CoreDNS service
+  ansible.builtin.systemd:
+    name: coredns.service
+    enabled: true
+    state: started # Optionally, start the service immediately after enabling

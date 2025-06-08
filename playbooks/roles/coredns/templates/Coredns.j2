@@ -1,0 +1,39 @@
+[Unit]
+Description=CoreDNS DNS server
+Documentation=https://coredns.io/manual/
+After=network.target 
+Wants=network.target
+
+[Service]
+Type=simple
+# User and Group are optional. If you want CoreDNS to run as a non-root user,
+# create a user (e.g., 'coredns') and uncomment these lines.
+# User=coredns
+# Group=coredns
+WorkingDirectory=/usr/local/bin 
+ExecStart=/usr/local/bin/coredns -conf /usr/local/bin/Corefile 
+# If your CoreDNS binary and Corefile are in the same directory, you can simplify to:
+# ExecStart=/usr/local/bin/coredns
+
+
+Restart=on-failure
+RestartSec=5s # Wait 5 seconds before attempting to restart
+
+# Limit the number of file descriptors that CoreDNS can open.
+# This is important for a high-volume DNS server.
+LimitNOFILE=100000
+
+# Hardening options (optional but recommended for production)
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+# ReadWritePaths=/var/log/coredns 
+# CapabilityBoundingSet=CAP_NET_BIND_SERVICE # If running as non-root and binding to privileged ports (<1024)
+
+[Install]
+WantedBy=multi-user.target # Start this service when the system reaches multi-user runlevel

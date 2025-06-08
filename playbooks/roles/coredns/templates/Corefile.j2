@@ -1,0 +1,50 @@
+gitlab.thesolomonsnc.com {
+    hosts {
+        192.168.1.201 gitlab.thesolomonsnc.com
+        fallthrough
+    }
+    log
+    errors
+    health
+    ready
+}
+
+coredns.thesolomonsnc.com {
+    hosts {
+        192.168.1.200 coredns.thesolomonsnc.com
+        fallthrough
+    }
+    log
+    errors
+    health
+    ready
+}
+
+nfs.thesolomonsnc.com {
+    hosts {
+        192.168.1.160 nfs.thesolomonsnc.com
+        fallthrough
+    }
+    log
+    errors
+    health
+    ready
+}
+
+proxmox.thesolomonsnc.com {
+    hosts {
+        192.168.1.232 proxmox.thesolomonsnc.com
+        fallthrough
+    }
+    log
+    errors
+    health
+    ready
+}
+. {
+    forward . 8.8.8.8 8.8.4.4
+    log
+    errors
+    health
+    ready
+}

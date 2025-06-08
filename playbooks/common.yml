@@ -1,0 +1,7 @@
+---
+- name: Configure DNS on Ubuntu servers
+  hosts: coredns # Replace with your inventory group or hostname
+  become: yes               # Required to modify system network configuration
+  roles:
+    - common
+    - coredns

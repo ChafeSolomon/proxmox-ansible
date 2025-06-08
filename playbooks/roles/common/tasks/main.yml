@@ -1,0 +1,15 @@
+---
+# set_dns/tasks/main.yml
+# This task configures the DNS server on an Ubuntu machine using Netplan.
+
+- name: Generate Netplan configuration for DNS
+  # The 'template' module is used to copy a file from the control machine
+  # to the target machine, while substituting variables using Jinja2 syntax.
+  ansible.builtin.template:
+    src: 01-netcfg.j2      # Source template file (in 'templates/' directory)
+    dest: /etc/netplan/01-netcfg.yaml # Destination path on the target server
+    owner: root                 # Set file owner to root
+    group: root                 # Set file group to root
+    mode: '0644'                # Set file permissions (read/write for owner, read-only for others)
+  # 'notify' triggers a handler if this task makes a change (i.e., the template content is different)
+  notify: Apply Netplan configuration

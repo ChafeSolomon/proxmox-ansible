@@ -1,0 +1,21 @@
+# set_dns/templates/01-netcfg.yaml.j2
+# Netplan configuration template for setting DNS, retaining current static IP, and setting a default gateway.
+# It uses Jinja2 to dynamically populate the interface name, current IP, DNS server, and gateway.
+
+network:
+  version: 2
+  renderer: networkd # or 'networkmanager' depending on your Ubuntu setup
+  ethernets:
+    # Use ansible_default_ipv4.interface to get the primary network interface name.
+    # This makes the role more flexible across different server configurations.
+    {{ ansible_default_ipv4.interface }}:
+      # Removed 'dhcp4: true' as we are explicitly setting static addresses.
+      # Retain the current IP address and its network prefix.
+      addresses: ["{{ ansible_default_ipv4.address }}/24"]
+      nameservers:
+        # The 'dns_server' variable will be defined in vars/main.yml or passed during execution.
+        addresses: [{{ dns_server }}]
+      routes:
+        # Set the default gateway to 192.168.1.1.
+        - to: default
+          via: 192.168.1.1

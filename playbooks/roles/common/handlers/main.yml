@@ -1,0 +1,10 @@
+---
+# set_dns/handlers/main.yml
+# Handlers are triggered by tasks when a change occurs.
+
+- name: Apply Netplan configuration
+  # The 'command' module runs an arbitrary command on the target host.
+  # 'netplan apply' reads the configuration files in /etc/netplan/ and applies them.
+  ansible.builtin.command: netplan apply
+  # 'listen' associates this handler with the 'notify' statement in the task.
+  listen: "Apply Netplan configuration"

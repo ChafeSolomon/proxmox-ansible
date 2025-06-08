@@ -1,0 +1,6 @@
+---
+# set_dns/vars/main.yml
+# Variables for the set_dns role.
+
+# The IP address of your desired DNS server.
+dns_server: "192.168.1.200"
