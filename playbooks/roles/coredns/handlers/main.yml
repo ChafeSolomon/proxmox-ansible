@@ -1,3 +1,21 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# handlers file for coredns
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Restart CoreDNS
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: stopped
+  ansible.builtin.systemd:
+    name: coredns.service
+    state: restarted
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: started
+
+- name: Restart systemd-resolved
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: restarted
+  # This handler only runs if notified by a task

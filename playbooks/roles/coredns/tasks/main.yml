@@ -18,7 +18,7 @@
       owner: root                 # Set file owner to root
       group: root                 # Set file group to root
       mode: '0644'
-
+  notify: Restart CoreDNS
 - name: Setup Service CoreDNS
   ansible.builtin.template:
       src: Coredns.j2     # Source template file (in 'templates/' directory)
@@ -26,6 +26,9 @@
       owner: root                 # Set file owner to root
       group: root                 # Set file group to root
       mode: '0644'
+  notify:
+    - Reload systemd daemon # This will trigger daemon-reload if the service file changes
+    - Restart CoreDNS       # This will restart CoreDNS after daemon-reload      
 
 - name: Enable CoreDNS service
   ansible.builtin.systemd:
