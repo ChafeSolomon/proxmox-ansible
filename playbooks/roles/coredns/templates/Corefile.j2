@@ -3,17 +3,40 @@ gitlab.thesolomonsnc.com {
         192.168.1.201 gitlab.thesolomonsnc.com
         fallthrough
     }
+    header {
+        response set ra
+    } 
     log
     errors
     health
     ready
 }
 
+plex.thesolomonsnc.com {
+    hosts {
+        192.168.1.202 plex.thesolomonsnc.com
+        fallthrough
+    }
+
+    header {
+        response set ra
+    } 
+
+    log
+    errors
+    health
+    ready
+}
+
+
 coredns.thesolomonsnc.com {
     hosts {
         192.168.1.200 coredns.thesolomonsnc.com
         fallthrough
     }
+    header {
+        response set ra
+    } 
     log
     errors
     health
@@ -25,6 +48,9 @@ nfs.thesolomonsnc.com {
         192.168.1.160 nfs.thesolomonsnc.com
         fallthrough
     }
+    header {
+        response set ra
+    } 
     log
     errors
     health
@@ -36,11 +62,15 @@ proxmox.thesolomonsnc.com {
         192.168.1.232 proxmox.thesolomonsnc.com
         fallthrough
     }
+    header {
+        response set ra
+    } 
     log
     errors
     health
     ready
 }
+
 . {
     forward . 8.8.8.8 8.8.4.4
     log

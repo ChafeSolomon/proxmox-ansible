@@ -1,7 +1,11 @@
 ---
-# set_dns/tasks/main.yml
-# This task configures the DNS server on an Ubuntu machine using Netplan.
+- name: Install Admin Tools
+  apt:
+    name:
+      - vim
+    state: present
 
+#need to add an if statment on if to only run if /etc/netplan exists
 - name: Generate Netplan configuration for DNS
   # The 'template' module is used to copy a file from the control machine
   # to the target machine, while substituting variables using Jinja2 syntax.

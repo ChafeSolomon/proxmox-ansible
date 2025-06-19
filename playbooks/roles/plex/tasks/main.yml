@@ -1,0 +1,27 @@
+---
+- name: Download and Install Plex
+  ansible.builtin.get_url:
+    url: "  https://downloads.plex.tv/plex-media-server-new/1.41.7.9823-59f304c16/debian/plexmediaserver_1.41.7.9823-59f304c16_amd64.deb?_gl=1*zkemh5*_gcl_au*MjU3MjYxNjI3LjE3NDk1MDg0NjM.*_ga*NDk1MDY0OTg2LjE3NDA3ODM2MDM.*_ga_G6FQWNSENB*czE3NDk1MDg0NjIkbzMkZzEkdDE3NDk1MDg4NjckajU3JGwwJGgw"
+    checksum: "sha1:1e331d84c05459aa4aa16fa9294718a24c10c7fd"
+    dest: /tmp/plex.deb
+
+- name: Install a .deb package from the internet
+  ansible.builtin.apt:
+    deb: /tmp/plex.deb
+  
+- name: Edit file
+  ansible.builtin.lineinfile:
+    path: /etc/apt/sources.list.d/plexmediaserver.list
+    search_string: "# {{ item }}"
+    line: "{{ item }}"
+    state: present
+  with_items:
+    - "deb [arch=amd64 signed-by=/usr/share/keyrings/plexmediaserver.gpg] https://downloads.plex.tv/repo/deb/ public main"
+
+- name: Mount an NFS volume
+  ansible.posix.mount:
+    src: 192.168.1.160:/export/Shared
+    path: /mnt/shared_data
+    opts: rw,sync,insecure
+    state: mounted
+    fstype: nfs   

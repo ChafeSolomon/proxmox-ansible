@@ -8,7 +8,7 @@
     name: systemd-resolved
     state: stopped
   ansible.builtin.systemd:
-    name: coredns.service
+    name: coredns
     state: restarted
   ansible.builtin.systemd:
     name: systemd-resolved
